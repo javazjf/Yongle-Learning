@@ -15,4 +15,9 @@ public class UserApiFallback implements IUserApi {
     public User loginByPhoneAndCode(String phone, String code) {
         return null;
     }
+
+    @Override
+    public User getUserInfo(Integer userId) {
+        return null;
+    }
 }

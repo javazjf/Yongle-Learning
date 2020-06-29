@@ -4,3 +4,11 @@ spring:
     url: jdbc:mysql://localhost:3306/yongle?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
     username: root
     password: admin
+  application:
+    name: eureka-server
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8716/eureka
+    fetch-registry: false
+    register-with-eureka: false
