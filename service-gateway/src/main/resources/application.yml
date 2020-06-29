@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: service-gateway
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/yongle?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8
+    username: root
+    password: admin
+  redis:
+    port: 6379
+    database: 0
+    host: localhost
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      routes:
+        - id: user-service-login
+          uri: lb://user-service
+          predicates:
+            - Path= /api/user/login**
+          filters:
+            - StripPrefix=1
+            - AuthToken=false
+        - id: user-service-info
+          uri: lb://user-service
+          predicates:
+            - Path= /api/user/**
+          filters:
+            - StripPrefix=1
+            - AuthToken=true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8716/eureka
