@@ -29,5 +29,5 @@ public interface IUserApi {
                                     @RequestParam("code") String code);
 
     @GetMapping(value = "/user/getUserInfo")
-    public User getUserInfo(Integer userId);
+    public User getUserInfo();
 }

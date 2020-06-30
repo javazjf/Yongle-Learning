@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -53,20 +54,23 @@ public class UserController {
     @GetMapping(value = "/user/getUserInfo")
     public ResponseEntity<UserDto> getUserInfo() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String userJson = request.getHeader("user");
-        if (StringUtils.isBlank(userJson)) {
+        String uid = request.getHeader("uid");
+        if (StringUtils.isBlank(uid)) {
+            Map<String, String> errorMap = Maps.newHashMap();
+            errorMap.put("message", "未登录");
+            return new ResponseEntity(errorMap, HttpStatus.BAD_REQUEST);
+        }
+
+        User user = userService.findUserById(Integer.parseInt(uid));
+
+        if (user == null) {
             Map<String, String> errorMap = Maps.newHashMap();
             errorMap.put("message", "用户不存在");
             return new ResponseEntity(errorMap, HttpStatus.BAD_REQUEST);
         }
 
-        UserDto userDto = JSON.parseObject(userJson, UserDto.class);
-        if (userDto == null) {
-            Map<String, String> errorMap = Maps.newHashMap();
-            errorMap.put("message", "格式错误");
-            return new ResponseEntity(errorMap, HttpStatus.BAD_REQUEST);
-        }
-
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(user, userDto, "password");
         return new ResponseEntity(userDto, HttpStatus.OK);
     }
 }

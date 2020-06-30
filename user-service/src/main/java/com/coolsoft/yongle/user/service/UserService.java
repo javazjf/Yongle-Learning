@@ -15,4 +15,8 @@ public class UserService {
         User user = userDao.findUserByAccountAndPassword(account, password);
         return user;
     }
+
+    public User findUserById(Integer id){
+        return userDao.findUserById(id);
+    }
 }

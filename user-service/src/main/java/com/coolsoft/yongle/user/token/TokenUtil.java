@@ -11,7 +11,7 @@ public class TokenUtil {
 
     public static String genToken(RedisTemplate redisTemplate, User user) {
         String token = UUID.randomUUID().toString().replaceAll("-", "");
-        redisTemplate.opsForValue().set("sess_" + token, JSON.toJSONString(user));
+        redisTemplate.opsForValue().set("sess_" + token, user.getId());
         redisTemplate.expire("sess_" + token, 30, TimeUnit.DAYS);
         return token;
     }

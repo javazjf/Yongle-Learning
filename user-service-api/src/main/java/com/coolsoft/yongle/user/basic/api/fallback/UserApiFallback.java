@@ -17,7 +17,7 @@ public class UserApiFallback implements IUserApi {
     }
 
     @Override
-    public User getUserInfo(Integer userId) {
+    public User getUserInfo() {
         return null;
     }
 }

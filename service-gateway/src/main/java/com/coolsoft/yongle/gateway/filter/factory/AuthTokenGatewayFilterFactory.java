@@ -41,8 +41,8 @@ public class AuthTokenGatewayFilterFactory extends AbstractGatewayFilterFactory<
                 if (!StringUtils.isBlank(token)) {
                     String session = "sess_" + token;
                     if (redisTemplate.hasKey(session)) {
-                        String userJson = (String) redisTemplate.opsForValue().get(session);
-                        ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate().header("user", userJson).build();
+                        String uid = (String) redisTemplate.opsForValue().get(session);
+                        ServerHttpRequest serverHttpRequest = exchange.getRequest().mutate().header("uid", uid).build();
                         exchange = exchange.mutate().request(serverHttpRequest).build();
                         return chain.filter(exchange);
                     } else {
